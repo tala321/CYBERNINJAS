@@ -1,0 +1,86 @@
+.orange-particles-layer {
+
+  position: fixed;
+
+  inset: 0;
+
+  pointer-events: none;
+
+  z-index: 9999;
+
+  overflow: hidden;
+
+}
+
+
+.orange-particle {
+
+  position: absolute;
+
+  display: block;
+
+  border-radius: 50%;
+
+
+  background:
+
+    radial-gradient(
+      circle,
+      #fff4cc 0%,
+      #ff9800 35%,
+      #ff4500 75%
+    );
+
+
+  box-shadow:
+
+    0 0 8px #ff9800,
+
+    0 0 18px #ff4500;
+
+
+  animation:
+
+    particle-fly 0.55s ease-out forwards;
+
+}
+
+
+
+@keyframes particle-fly {
+
+
+  0% {
+
+    opacity: 1;
+
+    transform:
+      translate(0,0)
+      scale(1);
+
+  }
+
+
+  100% {
+
+
+    opacity: 0;
+
+
+    transform:
+
+      translate(
+        calc(
+          -20px + 40px * var(--random-x)
+        ),
+
+        -45px
+
+      )
+
+      scale(0);
+
+
+  }
+
+}
