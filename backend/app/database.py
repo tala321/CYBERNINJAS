@@ -7,10 +7,21 @@ from sqlalchemy.orm import sessionmaker, declarative_base
 DATABASE_URL = os.getenv("DATABASE_URL")
 
 
+# إصلاح رابط Aiven إذا كان فيه ssl-mode
+if DATABASE_URL:
+    DATABASE_URL = DATABASE_URL.replace(
+        "?ssl-mode=REQUIRED",
+        ""
+    )
+
+
 engine = create_engine(
     DATABASE_URL,
     pool_pre_ping=True,
-    echo=False
+    echo=False,
+    connect_args={
+        "ssl": {}
+    }
 )
 
 
