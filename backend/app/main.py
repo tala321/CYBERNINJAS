@@ -80,7 +80,7 @@ app.add_exception_handler(
 
 frontend_url = os.getenv(
     "FRONTEND_URL",
-    "http://localhost:5173"
+    "https://cyberninjas-fawn.vercel.app"
 )
 
 
@@ -93,6 +93,10 @@ allowed_origins = [
     "http://localhost:3000",
 
     "http://127.0.0.1:3000",
+
+    "https://cyberninjas-fawn.vercel.app",
+
+    "https://cyberninjas-83rozq5ld-tala10.vercel.app",
 
     frontend_url
 
