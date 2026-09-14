@@ -1,8 +1,8 @@
 import os
 from datetime import datetime, timedelta, timezone
 
+import bcrypt
 from jose import jwt
-from passlib.context import CryptContext
 from dotenv import load_dotenv
 
 
@@ -43,20 +43,24 @@ if not SECRET_KEY:
 # PASSWORD HASHING
 # =====================================================
 
-pwd_context = CryptContext(
-    schemes=["bcrypt"],
-    deprecated="auto"
-)
-
-
-# =====================================================
-# HASH PASSWORD
-# =====================================================
-
 def hash_password(password: str) -> str:
-    return pwd_context.hash(
-        password[:72]
+    """
+    Hash a password using bcrypt.
+
+    bcrypt only supports passwords up to 72 bytes,
+    so we explicitly truncate the UTF-8 encoded password.
+    """
+
+    password_bytes = password.encode("utf-8")[:72]
+
+    salt = bcrypt.gensalt()
+
+    hashed = bcrypt.hashpw(
+        password_bytes,
+        salt
     )
+
+    return hashed.decode("utf-8")
 
 
 # =====================================================
@@ -67,11 +71,22 @@ def verify_password(
     plain_password: str,
     hashed_password: str
 ) -> bool:
+    """
+    Verify a plain password against a bcrypt hash.
+    """
 
-    return pwd_context.verify(
-        plain_password[:72],
-        hashed_password
-    )
+    try:
+        password_bytes = plain_password.encode("utf-8")[:72]
+
+        hashed_bytes = hashed_password.encode("utf-8")
+
+        return bcrypt.checkpw(
+            password_bytes,
+            hashed_bytes
+        )
+
+    except (ValueError, TypeError):
+        return False
 
 
 # =====================================================
