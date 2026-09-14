@@ -31,19 +31,12 @@ router = APIRouter(
 def get_levels(
     db: Session = Depends(get_db)
 ):
-
-    levels = (
-        db.query(Level)
-        .filter(
-            Level.is_active == 1
-        )
-        .order_by(
-            Level.level_number.asc()
-        )
-        .all()
-    )
-
-    return levels
+    try:
+        levels = db.query(Level).all()
+        return levels
+    except Exception as e:
+        print("DATABASE ERROR:", e)
+        raise e
 
 
 # =====================================================
